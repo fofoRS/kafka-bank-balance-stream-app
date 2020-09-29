@@ -31,6 +31,31 @@ services:
       KAFKA_NUM_PARTITIONS: 1
     networks:
       - kafkastreams-network
+  aggregator:
+    image: rrojas/account-balance-stream:1.0
+    build:
+      context: bank-balance-stream
+      dockerfile: src/main/docker/Dockerfile.jvm
+    environment:
+      QUARKUS_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:9092
+    depends_on:
+      - zookeeper
+      - kafka
+    networks:
+      - kafkastreams-network
+  producer:
+    image: rrojas/account-transaction-producer:1.0
+    build:
+      context: bank-balance-producer
+      dockerfile: src/main/docker/Dockerfile.jvm
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    depends_on:
+      - zookeeper
+      - kafka
+      - aggregator
+    networks:
+      - kafkastreams-network
 networks:
   kafkastreams-network:
     name: ks
