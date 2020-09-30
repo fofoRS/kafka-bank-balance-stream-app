@@ -7,7 +7,7 @@ which will be consumed and processed by a second service using Kafka Streams
 The application have two services one is a producer which emits 
 bank transactions periodically using the reactive message as Kafka as the broker.
 THe second service takes those events and processes them to finally aggregate by message key and 
-publish the back balance for each customer back to kafka.
+publish the bank balance for each customer back to kafka.
 
 ## Running the application
 
